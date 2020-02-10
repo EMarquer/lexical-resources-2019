@@ -3,6 +3,7 @@ from pprint import pprint
 import re
 from SPARQLWrapper import SPARQLWrapper, JSON
 sparql = SPARQLWrapper("http://dbpedia.org/sparql")
+sparql.setTimeout(100)
 sparql.query()
 sparql.addDefaultGraph("http://dbpedia.org")
 
@@ -29,6 +30,18 @@ SPARQ_MOVEMENTS = """
     WHERE {{
         <{}> dbp:genre ?genre .
         ?genre dct:subject dbc:Literary_movements .
+        ?genre rdfs:label ?genre_name .
+        FILTER (LANG(?genre_name)="fr")
+    }}
+    LIMIT 10
+"""
+SPARQ_MOVEMENTS = """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX dbp: <http://dbpedia.org/ontology/>
+    PREFIX dct: <http://purl.org/dc/terms/>
+    SELECT ?genre ?genre_name
+    WHERE {{
+        <{}> <http://dbpedia.org/ontology/movement> ?genre .
         ?genre rdfs:label ?genre_name .
         FILTER (LANG(?genre_name)="fr")
     }}
