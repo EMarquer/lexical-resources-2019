@@ -2,5 +2,8 @@ Django==2.2.5
 pytz==2019.2
 sqlparse==0.3.0
 click==7.0
-torch==1.2.0
+--find-links https://download.pytorch.org/whl/torch_stable.html
+torch
 sortedcontainers==2.1.0
+SPARQLWrapper==1.8.2
+gensim==3.8.1

@@ -6,21 +6,33 @@
 
 {% block content %}
 <section class="editor-main">
+  <section class="models-form">
+    <header>
+      <h1>
+        Selectionnez votre modèle ("{{model}}" actuellement utilisé)
+      </h1>
+    </header>
+    
+    <form method="post" action="">{% csrf_token %}
+      <table>{{ form }}</table>
+      <button type="submit" value='Submit'>Utiliser ce modèle</button>
+    </formaction="">
+  </section>
   <header>
     <h1>
-      Type your code below!
+      Tappez votre texte de théatre ci-dessous !
     </h1>
   </header>
   <section class="input-section">
     <div contenteditable="true" class="text-area-editable whitespace-friendly"
-    pred-tgt-handler="{% url 'preds' %}" edit-tgt-handler="{% url 'edits' %}">
+    pred-tgt-handler="{% url 'preds' %}" edit-tgt-handler="{% url 'edits' %}" complete-tgt-handler="{% url 'complete' %}">
           {{ text }}
     </div>
   </section>
   <section class="wrap-predicts">
     <header>
       <h1>
-        Suggested next words
+        Suggestion du prochain mot<!-- Suggested next words -->
       </h1>
     </header>
     <section class="predict-suggestions">
@@ -37,7 +49,7 @@
   <section class="wrap-edits">
     <header>
       <h1>
-        Suggested edits
+        Suggestion de corrections orthographiques<!-- Suggested edits -->
       </h1>
     </header>
     <section class="edit-suggestions">
@@ -51,6 +63,21 @@
     <footer class="edit-footer undisplayed">
       <a class="action-accept-edits">Accept all edits</a>
     </footer>
+  </section>
+  <section class="wrap-suggestions">
+    <header>
+      <h1>
+        Suggestion de completion
+      </h1>
+    </header>
+    <section class="complete-suggestions">
+      {% for complete in completes %}
+        <!-- this loop is actually never called, but it gives a general idea of the final layout -->
+        <span class="complete">
+          {{ pred }}
+        </span>
+      {% endfor %}
+    </section>
   </section>
   <footer class="global-footer">
     <a class="action-download">Download text</a>

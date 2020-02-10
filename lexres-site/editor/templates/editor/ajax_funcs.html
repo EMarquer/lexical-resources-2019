@@ -65,7 +65,7 @@ $(document).ready(function() {
               r.push(i);
           }
           for (var i in r) {
-            if (no_overlap[i]) {
+            if (no_overlap[r[i]]) {
               // previously marked as used
               console.log("dropping suggestion" + sugg_edits[sugg]);
               continue valid_edits;
@@ -74,7 +74,7 @@ $(document).ready(function() {
           vals.push([b,e,swap,k]);
           for (var i in r) {
             // mark slice as used
-            no_overlap[i] = true;
+            no_overlap[r[i]] = true;
           }
         }
         // add spans from last to first to avoid messing up b & e indices
@@ -87,6 +87,64 @@ $(document).ready(function() {
         $(".edit-suggestions").html('<div>' + orig_data.trim().replace(/(?:\r\n|\r|\n)/g, '</div><div>') + '</div>');
         // make the "accept all edits" button available
         $("footer.edit-footer").removeClass("undisplayed");
+      }
+    });
+  });
+
+  // completion handler
+  $(".text-area-editable").bind("keyup change", function () {
+    //TODO: this is horrible and could probably benefit from cleanup
+    var curtext = $(this).read_spaced();
+    $.ajax({
+      url: $(this).attr("complete-tgt-handler"),
+      data: {
+        'text': curtext
+      },
+      dataType: 'json',
+      success: function (data) {
+        $(".complete-suggestions").empty();
+        var parsed = eval(data);
+        var orig_data = parsed.orig_data;
+        delete parsed.orig_data;
+        var sugg_edits = []
+        for (var k in parsed) {
+            for (var i in parsed[k]) {
+              [b,e,swap] = parsed[k][i];
+              sugg_edits.push([b,e,swap,k]);
+            }
+          }
+        // drop overlapping
+        var no_overlap = Array.from({length: orig_data.length}).fill(false);
+        var vals = [];
+        valid_edits : for (var sugg in sugg_edits) {
+          [b,e,swap,k] = sugg_edits[sugg];
+          // build range
+          var r = new Array();
+          for(var i = b; i < e; i++) {
+              r.push(i);
+          }
+          for (var i in r) {
+            if (no_overlap[r[i]]) {
+              // previously marked as used
+              console.log("dropping suggestion" + sugg_edits[sugg]);
+              continue valid_edits;
+            }
+          }
+          vals.push([b,e,swap,k]);
+          for (var i in r) {
+            // mark slice as used
+            no_overlap[r[i]] = true;
+          }
+        }
+        // add spans from last to first to avoid messing up b & e indices
+        vals_sorted = vals.sort((a, b) => ((a[1] > b[1])? -1 : ((a[1] < b[1])? 1 : 0)));
+        for (var i in vals_sorted) {
+          [b,e,swap,k] = vals_sorted[i];
+          orig_data = orig_data.substring(0,b) + '<span class="edit-hoverable '+k+'" suggest="' + swap + '">' + orig_data.substring(b,e) + '</span>' + orig_data.substring(e, orig_data.length);
+        }
+        // fill preview
+        $(".complete-suggestions").html('<div>' + orig_data.trim().replace(/(?:\r\n|\r|\n)/g, '</div><div>') + '</div>');
+        // make the "accept all edits" button available
       }
     });
   });
