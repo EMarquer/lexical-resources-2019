@@ -7,9 +7,10 @@ import typing as t
     Functions should all share the same signature.
 """
 
+MAX_SUGGESTIONS = 5
 VERBOSE = True
 
-def complete_bar_function(text="", verbose=VERBOSE):
+def complete_bar_function(text="", verbose=VERBOSE, max_suggestions=MAX_SUGGESTIONS):
     """
         Example function. To be removed
     """
@@ -22,9 +23,12 @@ def complete_bar_function(text="", verbose=VERBOSE):
     # spellcheck all the tokens
     edits = []
     for token, (start_id, end_id) in tokens_and_id:
-        suggestion = autocompleter.complete(token)
+        # compute the top suggestions
+        suggestion = autocompleter.complete(token, max_selected=MAX_SUGGESTIONS)
+
+        # add the suggestion if at least 1 is provided
         if len(suggestion) > 0 and suggestion[0] != token:
-            edits.append(SpanEdit(beg_idx=start_id, end_idx=end_id, edit=suggestion))
+            edits.append(SpanEdit(beg_idx=start_id, end_idx=end_id, edit=', '.join(suggestion)))
 
     if verbose: print(f"{len(edits)} autocompletions suggérées")
     return edits
