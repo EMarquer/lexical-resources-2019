@@ -1,7 +1,7 @@
 try:
-    from .trie_structure  import Trie, TrieNode
+    from .structure  import Trie, TrieNode
 except ImportError:
-    from trie_structure  import Trie, TrieNode
+    from structure  import Trie, TrieNode
 import typing as t
 from sortedcontainers import SortedList
 

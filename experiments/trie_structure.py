@@ -1,6 +1,8 @@
 from __future__ import annotations
 import typing as t
 from pprint import pprint
+import pickle
+import re
 
 class TrieNode:
     """A trie node.
@@ -58,14 +60,21 @@ class Trie:
         return self.root.get_frequency_dict()
 
     def train_on_text(self, text: str):
-        import re
-        tokens = re.findall(r"([\w-]+)", text.lower())
+        tokens = re.findall(r"([\w-]+)", text)
         for token in tokens:
             self.add_word(token)
 
     def contains(self, word: str) -> bool:
         return any(child.contains(word) for child in self.root.children.values())
 
+    @staticmethod
+    def load(filepath: str) -> "Trie":
+        with open(filepath, "rb") as f:
+            return pickle.load(f)
+        
+    def save(self, filepath: str):
+        with open(filepath, "wb") as f:
+            pickle.dump(self, f)
     
 
 if __name__ == "__main__":
@@ -90,5 +99,38 @@ if __name__ == "__main__":
     print("''", trie.contains(""))
     print("'reports'", trie.contains("reports"))
     print("*'reportss'", trie.contains("reportss"))
+
+    
+    moliere_files = [f"molière_{i}.txt" for i in range(1,5)]
+    corneille_files = [f"corneille_{i}.txt" for i in range(1,8)]
+
+    def read_files(file_pathes, splitter = r"[\.;!\?~\*]"):
+        data = []
+        for path in file_pathes:
+            with open(path, 'r', encoding="utf8") as f:
+                sentences = [sentence.strip() for sentence in re.split(splitter, f.read()) if sentence]
+                data += sentences
+        return data
+
+    print(moliere_files)
+    moliere_data = read_files(moliere_files)
+    print(len(moliere_data), moliere_data[0])
+
+    print(corneille_files)
+    corneille_data = read_files(corneille_files)
+    print(len(corneille_data), corneille_data[0])
+
+    trie = Trie()
+    trie.train_on_text(" ".join(corneille_data))
+    trie.train_on_text(" ".join(moliere_data))
+    trie.save("../models/trie/moliere_corneille.pkl")
+
+    trie = Trie()
+    trie.train_on_text(" ".join(moliere_data))
+    trie.save("../models/trie/moliere.pkl")
+
+    trie = Trie()
+    trie.train_on_text(" ".join(corneille_data))
+    trie.save("../models/trie/corneille.pkl")
 
 #print(TrieNode("a", [TrieNode("b")]).is_leaf)
