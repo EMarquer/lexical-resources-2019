@@ -28,8 +28,12 @@ span.edit-hoverable span.hover-content {
   background: #fff;
   border-style: dotted;
   border-width: 1px;
-  border-radius: 3px;
+  border-radius: 3px; 
+  content : attr(suggest);
+  left: 0px;
+  top: 1.2em;
 }
+
 
 span.prediction {
   padding-left: 10px;
