@@ -22,7 +22,7 @@ def edit_bar_function(text="", verbose=VERBOSE):
     # spellcheck all the tokens
     edits = []
     for token, (start_id, end_id) in tokens_and_id:
-        suggestion = spellchecker.check_correct(token)
+        suggestion = spellchecker.check_correct(token).strip('_')
         if suggestion != token:
             edits.append(SpanEdit(beg_idx=start_id, end_idx=end_id, edit=suggestion))
 

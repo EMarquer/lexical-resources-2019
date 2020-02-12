@@ -40,8 +40,9 @@ class CharEncoder:
         # gather all the characters
         for sentence in sentences:
             tokens = tokenize(sentence)
-            for token in tokens:
-                char_set.update(token)
+            if tokens:
+                for token in tokens:
+                    char_set.update(token)
 
         # create the id to character list
         self.id_to_char = [self.token_boundary, self.padding, self.unknown] + list(char_set)

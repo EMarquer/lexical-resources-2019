@@ -1,3 +1,17 @@
-corneille
-moliere
-moliere_corneille
+théatre français
+théatre français -- romantisme
+théatre français -- romantisme -- Max du Veuzit (Alphonsine Vavasseur-Acher, 1876-1952)
+théatre français -- romantisme -- Ernest Doin, 1809-1891
+théatre français -- romantisme -- Victor Hugo, 1802-1885
+théatre français -- comédie
+théatre français -- comédie -- Aristophane
+théatre français -- comédie -- Charles-Antoine-Guillaume Pigault-Lebrun, 1753-1835
+théatre français -- comédie -- Christophe-Barthélemi Fagan, 1702-1755
+théatre français -- parnasse
+théatre français -- parnasse -- Nicolas-Marc Desfontaines, -1652
+théatre français -- parnasse -- Charles-Antoine-Guillaume Pigault-Lebrun, 1753-1835
+théatre français -- parnasse -- Christophe-Barthélemi Fagan, 1702-1755
+théatre français -- tragédie
+théatre français -- tragédie -- Aristophane
+théatre français -- tragédie -- Jean Mairet, 1604-1686
+théatre français -- tragédie -- Monsieur Scarron, 1610-1660

@@ -1,0 +1,59 @@
+{
+    "romantisme": {
+        "Max du Veuzit (Alphonsine Vavasseur-Acher, 1876-1952)": [
+            "27627",
+            "27617",
+            "27619",
+            "27623",
+            "27626"
+        ],
+        "Ernest Doin, 1809-1891": [
+            "13036",
+            "13070",
+            "19519",
+            "19536"
+        ],
+        "Victor Hugo, 1802-1885": [
+            "13628",
+            "9976"
+        ]
+    },
+    "com\u00e9die": {
+        "Aristophane": [
+            "19075",
+            "20664"
+        ],
+        "Charles-Antoine-Guillaume Pigault-Lebrun, 1753-1835": [
+            "26810"
+        ],
+        "Christophe-Barth\u00e9lemi Fagan, 1702-1755": [
+            "26822"
+        ]
+    },
+    "parnasse": {
+        "Nicolas-Marc Desfontaines, -1652": [
+            "17940",
+            "17984",
+            "18121",
+            "19455"
+        ],
+        "Charles-Antoine-Guillaume Pigault-Lebrun, 1753-1835": [
+            "26810"
+        ],
+        "Christophe-Barth\u00e9lemi Fagan, 1702-1755": [
+            "26822"
+        ]
+    },
+    "trag\u00e9die": {
+        "Aristophane": [
+            "19075",
+            "20664"
+        ],
+        "Jean Mairet, 1604-1686": [
+            "27282"
+        ],
+        "Monsieur Scarron, 1610-1660": [
+            "20325"
+        ]
+    }
+}

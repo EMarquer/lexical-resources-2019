@@ -1,5 +1,5 @@
 from .trie import Trie, TrieSpellchecker, TrieAutocompleter
-#from .language_model import *
+from .language_model import BackoffMechanism, CharEncoder
 import typing as t
 import os
 
@@ -8,14 +8,16 @@ THIS_FILE_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 TRIE_FOLDER = "../../../models/trie"
 TRIE_SINGLETONS: t.Dict[str, t.Tuple[Trie, TrieSpellchecker, TrieAutocompleter]] = dict()
 
-LM_BACKOFF_FILE = "../../../models/language_model/backoff.pkl"
-LM_ENCODER_FILE = "../../../models/language_model/backoff.pkl"
+LM_FOLDER = "../../../models/language_model"
+LM_BACKOFF_FILE = "backoff.pkl"
+LM_ENCODER_FILE = "encoder.pkl"
 LM_SINGLETON = None
 LM_ENCODER_SINGLETON = None
+MAX_NEXT_WORDS = 1
 
 MODEL_LIST_FILE = "../../../models/list.txt"
 MODEL_LIST = None
-DEFAULT_MODEL = "moliere"
+DEFAULT_MODEL = "théatre français"
 CURRENT_MODEL = DEFAULT_MODEL
 
 def get_model_list():
@@ -67,11 +69,19 @@ def get_autocompleter(model = None):
         load_trie(model)
     return TRIE_SINGLETONS[model][2]
 
-def get_language_model(model = None):
+def get_language_model(model = None, max_next_words=MAX_NEXT_WORDS):
     if model is None: model = get_current_model()
     
-    global TRIE_SINGLETONS
-    if model not in TRIE_SINGLETONS.keys():
-        # make the trie loader load the correct model
-        load_trie(model)
-    return TRIE_SINGLETONS[model][2]
+    global LM_SINGLETON, LM_ENCODER_SINGLETON
+    # load the backoff model
+    if LM_SINGLETON is None:
+        LM_SINGLETON = BackoffMechanism.load(
+            os.path.join(THIS_FILE_DIRECTORY, LM_FOLDER),
+            LM_BACKOFF_FILE)
+    # load the character encoder
+    if LM_ENCODER_SINGLETON is None:
+        LM_ENCODER_SINGLETON = CharEncoder.load(
+            os.path.join(THIS_FILE_DIRECTORY, LM_FOLDER, LM_ENCODER_FILE))
+    
+    return (lambda context: 
+        LM_SINGLETON.sample(model, LM_ENCODER_SINGLETON, context, max_next_words))

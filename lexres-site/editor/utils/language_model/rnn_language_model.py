@@ -61,7 +61,7 @@ class LanguageModel(nn.Module):
         model = cls(**data['construction_parameters'])
 
         # load state
-        model.load_state_dict(data['state_dict'])
+        model.load_state_dict(data['state_dict'], False)
 
         return model
 

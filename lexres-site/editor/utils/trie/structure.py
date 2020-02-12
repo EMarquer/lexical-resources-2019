@@ -54,6 +54,7 @@ class Trie:
         self.root = TrieNode(None, frequency=0)
 
     def add_word(self, word: str):
+        word = word.strip('_').replace('_', ' ') # take care of the underscores
         self.root.add_word(word)
 
     def get_frequency_dict(self) -> t.Tuple[t.Tuple[str, int, bool], t.Dict]:
